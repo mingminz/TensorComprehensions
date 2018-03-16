@@ -192,7 +192,7 @@ class TcAutotuner(object):
 
     def set_autotuner_parameters(
         self, pop_size=20, crossover_rate=80, mutation_rate=7, generations=10,
-        number_elites=1, threads=8, gpus="0", proto="/tmp/tuner.txt",
+        threads=8, gpus="0", proto="/tmp/tuner.txt",
         restore_from_proto=False, restore_number=10, log_generations=False,
         tuner_min_launch_total_threads=64, **kwargs
     ):
@@ -200,7 +200,6 @@ class TcAutotuner(object):
         self.autotuner.crossover_rate(crossover_rate)
         self.autotuner.mutation_rate(mutation_rate)
         self.autotuner.generations(generations)
-        self.autotuner.number_elites(number_elites)
         self.autotuner.threads(threads)
         self.autotuner.gpus(gpus)
         self.autotuner.proto(proto)
@@ -574,9 +573,6 @@ class TcUnit(object):
 
             mutation_rate (int):
                 rate at which candidate options are randomly changed (mutated). Default 7
-
-            number_elites (int):
-                number of best candidates that are preserved intact between generations (without any mutations). Default 10
 
             threads (int):
                 The number of threads that are used to compile different candidates in parallel. Default 1
