@@ -563,19 +563,16 @@ def spatial_batch_norm(
     bool training = true;
     at::Tensor weight = at::CUDA(at::kFloat).ones({C1});
     at::Tensor bias = at::CUDA(at::kFloat).zeros({C1});
-    auto save_mean = outputs[1].clone().zero_();
-    auto save_std = outputs[2].clone().zero_();
-    auto O = at::batch_norm_forward(
+    auto O = batch_norm(
         I,
         weight,
         bias,
         rMeanIn,
         rVarIn,
         training,
-        at::Scalar(momentum).toFloat(),
-        at::Scalar(eps).toFloat(),
-        save_mean,
-        save_std);
+        at::Scalar(momentum[0]).toFloat(),
+        at::Scalar(eps[0]).toFloat(),
+        false);
     auto diff = O.sub(outputs[0]);
     checkRtol(diff, inputs, N * H * W, prec);
   };
