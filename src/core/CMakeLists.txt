@@ -166,6 +166,7 @@ if (WITH_CUDA)
     ${CUDA_LIBRARIES}
     ${CUDA_NVRTC_LIBRARIES}
     ${ISL_LIBRARIES}
+    ${GLOG_LIBRARIES}
 
     tc_lang
     tc_version

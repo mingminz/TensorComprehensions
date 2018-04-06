@@ -28,7 +28,6 @@
 
 #include "tc/core/cuda/cuda.h"
 #include "tc/core/cuda/cuda_mapping_options.h"
-#include "tc/core/cuda/cuda_rtc.h"
 #include "tc/core/utils/time.h"
 
 namespace tc {
@@ -59,6 +58,8 @@ struct TensorInfo {
 template <typename CC>
 class Cache {
  public:
+  Cache() = default;
+  Cache(Cache&&);
   static void enableCache();
   static void disableCache();
   static void dumpCacheToProtobuf(const std::string& filename);
@@ -95,10 +96,11 @@ class OptionsCache;
 class CudaCache : public Cache<CudaCache> {
  private:
   friend class Cache<CudaCache>;
-  using Protobuf = CudaCacheProto;
   static std::shared_ptr<CudaCache>& getGlobalSharedCache();
 
  public:
+  using Protobuf = CudaCacheProto;
+
   struct RetrievalResult {
     std::string source;
     std::string specializedName;
@@ -230,10 +232,11 @@ class CudaCache : public Cache<CudaCache> {
 
 class OptionsCache : public Cache<OptionsCache> {
   friend class Cache<OptionsCache>;
-  using Protobuf = OptionsCacheProto;
   static std::shared_ptr<OptionsCache>& getGlobalSharedCache();
 
  public:
+  using Protobuf = OptionsCacheProto;
+
   /**
    * An OptionsCache holds multiple CachedEntry's.
    * Each CachedEntry is split to two conceptual parts the key and the values.
@@ -275,6 +278,8 @@ class OptionsCache : public Cache<OptionsCache> {
       std::vector<detail::TensorInfo> outputs;
       std::string deviceStr;
       std::string gitVersion;
+
+      bool operator==(const Key& other) const;
     };
 
     struct Values {
@@ -360,6 +365,8 @@ class OptionsCache : public Cache<OptionsCache> {
   // Only (up to) numberToKeep entries per operation (combination of id and
   // input info) are kept in the cache. The best performing versions are kept
   void keepOnlyBestCandidates(size_t numberToKeep);
+
+  void mergeWith(const OptionsCache& other);
 };
 
 /*
@@ -368,10 +375,11 @@ class OptionsCache : public Cache<OptionsCache> {
 class ManualCudaCache : public Cache<ManualCudaCache> {
  private:
   friend class Cache<ManualCudaCache>;
-  using Protobuf = ManualCudaCacheProto;
   static std::shared_ptr<ManualCudaCache>& getGlobalSharedCache();
 
  public:
+  using Protobuf = ManualCudaCacheProto;
+
   /*
    *A CudaCache holds multiple CachedEntry's.
    *Each CachedEntry is split to two conceptual parts the key and the values.

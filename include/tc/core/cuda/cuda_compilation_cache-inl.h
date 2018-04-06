@@ -24,6 +24,8 @@
 #include <version.h>
 
 namespace tc {
+template <typename CC>
+Cache<CC>::Cache(Cache&&) {}
 
 template <typename CC>
 void Cache<CC>::enableCache() {

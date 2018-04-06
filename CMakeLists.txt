@@ -271,3 +271,7 @@ if (WITH_CAFFE2 AND WITH_CUDA)
 else()
   message(STATUS "Not building benchmarks, caffe2 or CUDA not available")
 endif()
+
+if (WITH_CUDA)
+  add_subdirectory(utils)
+endif()
