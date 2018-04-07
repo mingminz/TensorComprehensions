@@ -54,9 +54,7 @@ std::vector<CudaMappingOptions> restoreCandidates(
   });
 
   return tc::autotune::restoreCandidates(
-      tc::autotune::canonicalTC(lang::Parser(tc).parseFunction()),
-      inputsPair.first,
-      outputsPair.first);
+      tc::autotune::canonicalTC(tc), inputsPair.first, outputsPair.first);
 }
 
 TEST(RestoreCandidates, NoCache) {

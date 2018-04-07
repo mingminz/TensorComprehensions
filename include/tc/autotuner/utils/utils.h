@@ -45,6 +45,7 @@ struct CanonicalTcString : public std::string {
 };
 
 CanonicalTcString canonicalTC(const lang::TreeRef& tc);
+CanonicalTcString canonicalTC(const std::string& tc);
 
 std::vector<CudaMappingOptions> restoreCandidates(
     const CanonicalTcString& tc,

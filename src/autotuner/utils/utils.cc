@@ -80,6 +80,10 @@ CanonicalTcString canonicalTC(const lang::TreeRef& tc) {
   return CanonicalTcString(ss.str());
 }
 
+CanonicalTcString canonicalTC(const std::string& tc) {
+  return canonicalTC(lang::Parser(tc).parseFunction());
+}
+
 std::vector<CudaMappingOptions> restoreCandidates(
     const CanonicalTcString& tc,
     const std::vector<const DLTensor*>& inputs,
