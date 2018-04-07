@@ -270,7 +270,10 @@ struct Benchmark : public ::testing::Test {
       auto inputsPair = tc::toConstDlpackTensors(inputs);
       auto outputs = atCompl.inferOutputTensorInfo(name, inputs);
       tc::ScopeGuard g([&]() { tc::deleteDlmTensors(inputsPair.second); });
-      return tc::autotune::restoreCandidates(name, inputsPair.first, outputs);
+      return tc::autotune::restoreCandidates(
+          tc::autotune::canonicalTC(lang::Parser(tc).parseFunction()),
+          inputsPair.first,
+          outputs);
     }();
     auto handle = atCompl.compile(name, inputs, mappingOptions[0]);
     std::vector<at::Tensor> outputs;

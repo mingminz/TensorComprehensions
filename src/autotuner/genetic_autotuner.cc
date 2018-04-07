@@ -81,7 +81,7 @@ std::vector<CudaMappingOptions> GeneticAutotuner::load(
   ee.define(tc_);
   auto outputs = ee.inferOutputTensorInfo(tcName, inputs);
   return tc::autotune::restoreCandidates(
-      tcNameMap_.at(tcName), inputs, outputs);
+      canonicalTC(tcNameMap_.at(tcName)), inputs, outputs);
 }
 
 namespace {

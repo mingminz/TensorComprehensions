@@ -22,6 +22,7 @@
 #include "tc/lang/canonicalize.h"
 #include "tc/lang/parser.h"
 #include "tc/lang/sema.h"
+#include "tc/lang/tc_format.h"
 
 namespace tc {
 
@@ -35,7 +36,7 @@ int toTypeToken(DLDataType dtype) {
 
 std::string canonicalizedTc(const lang::TreeRef tcDefinition) {
   std::stringstream ss;
-  ss << canonicalize(lang::Sema().checkFunction(tcDefinition));
+  tcFormat(ss, canonicalize(lang::Sema().checkFunction(tcDefinition)));
   return ss.str();
 }
 
